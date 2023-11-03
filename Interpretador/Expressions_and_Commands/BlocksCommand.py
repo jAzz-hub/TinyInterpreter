@@ -9,7 +9,10 @@ class BlocksCommand(Command):
     def addCommand(self, command):
         self.__comandos.append(command)
     
+    def comandos(self):
+        return self.__comandos
+    
     @abstractmethod
-    def execute():
+    def execute(self):
         for i in self.__comandos:
             i.execute()

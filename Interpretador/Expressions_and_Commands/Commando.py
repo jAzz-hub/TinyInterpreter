@@ -1,3 +1,5 @@
+
+
 from abc import abstractmethod
 
 class Command:
@@ -8,5 +10,5 @@ class Command:
         return self.__line
     
     @abstractmethod
-    def execute():
+    def execute(self):
         return 0

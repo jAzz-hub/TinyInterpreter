@@ -6,6 +6,12 @@
 
 from sys import argv
 
+import os
+
+import sys
+
+
+
 from Syntatical import *
 
 
@@ -36,7 +42,25 @@ else:
 
 s = SyntaticAnalyzer(analyzeLex)
 
-s.Start()
+print(analyzeLex.nameOfFile)
+
+TinyCommands = s.Start()
+
+
+os.system('clear')
+
+TinyCommands.execute()
+
+# for i in TinyCommands.comandos():
+#     print(i)
+
+# for i in TinyCommands.comandos():
+#     print(i.execute())
+
+#Executa todos os comandos do script interpretado
+
+    
+
 
 #Implementar analizador sintático
 #Implementar a interpretação
