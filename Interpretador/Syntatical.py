@@ -1,5 +1,12 @@
 from Lexical import *
 
+
+# from Expressions_and_Commands.BlocksCommand import *
+
+# from Expressions_and_Commands.ConstIntExpression import *
+
+from Expressions_and_Commands.OutputCommand import *
+
 class SyntaticAnalyzer:
     def __init__(self, lexeme = Lexeme(), LexAnalysis = LexicalAnalyzer('examples/sum.tiny')):
         self.LexAnalysis = LexAnalysis
@@ -84,8 +91,12 @@ class SyntaticAnalyzer:
     #<output>    ::= output <intexpr>
     def procOutput(self): #v
         self.eat('KT_OUTPUT')
-        self.procIntExpr()
-
+        
+        outputLine = self.LexAnalysis.line
+        expression = self.procIntExpr()
+        
+        outputCmd = OutputCommand(outputLine, expression)
+         
 
 #<if>        ::= if <boolexpr> then <cmdlist> [ else <cmdlist> ] done
     def procIf(self): #v
@@ -146,7 +157,7 @@ class SyntaticAnalyzer:
         elif self.lexemes[self.readingPoint].word == 'AT_SUB':
              self.NextLexeme()
         
-        self.procIntTerm()
+        expression = self.procIntTerm()
 
         if self.lexemes[self.readingPoint].word == 'AT_ADD' or self.lexemes[self.readingPoint].word == 'AT_SUB' or self.lexemes[self.readingPoint].word == 'AT_MUL' or self.lexemes[self.readingPoint].word == 'AT_MOD' or self.lexemes[self.readingPoint].word == 'AT_DIV':
             if self.lexemes[self.readingPoint].word == 'AT_ADD' or self.lexemes[self.readingPoint].word == 'AT_MUL' or self.lexemes[self.readingPoint].word == 'AT_SUB' or self.lexemes[self.readingPoint].word == 'AT_DIV' or self.lexemes[self.readingPoint].word == 'AT_MOD':
@@ -156,17 +167,20 @@ class SyntaticAnalyzer:
 
             self.procIntTerm()
 
+        return expression
     #<intterm>   ::= <var> | <const> | read
     def procIntTerm(self): # v
 
         if self.lexemes[self.readingPoint].word == 'OT_VAR':
             self.procVar()
+            return 0
 
         elif self.lexemes[self.readingPoint].word == 'NUMBER':
             self.procConst()
 
         else:
             self.eat('KT_READ')
+            return 0
 
 
     #<var>       ::= id
@@ -176,6 +190,15 @@ class SyntaticAnalyzer:
 
     #<const>     ::= number
     def procConst(self): #v
+        
+        auxVariable =  self.lexemes[self.readingPoint].token
+        
         self.eat('NUMBER')
+        
+        lineOfNumber = self.LexAnalysis.line
+            
+        eatenNumber = int(auxVariable)
 
+        expression = ConstIntExpression(lineOfNumber, eatenNumber)
 
+        return expression
