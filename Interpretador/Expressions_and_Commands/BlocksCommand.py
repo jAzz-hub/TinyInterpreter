@@ -1,8 +1,5 @@
 
-from abc import abstractmethod
-
-from Command import * 
-
+from Expressions_and_Commands.Commando import *
 class BlocksCommand(Command):
     
     def __init__(self, line, comandos = []):

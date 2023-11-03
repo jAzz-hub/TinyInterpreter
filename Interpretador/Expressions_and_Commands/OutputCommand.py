@@ -1,5 +1,5 @@
-from Command import *
-from IntExpression import *
+from Expressions_and_Commands.Commando import *
+from Expressions_and_Commands.ConstIntExpression import *
 
 class OutputCommand(Command):
     def __init__(self, line, intExp ):
