@@ -8,7 +8,6 @@ class Lexeme:
     def __init__(self, token = "", word = ""):
         self.string = ""
         try:
-            print(f"\t {token} + \t ")
             if word != "":
                 self.word = word
             else:
@@ -34,4 +33,4 @@ a = Lexeme('program')
 
 a.string = a.stringnizing()
 
-print(a.string)
+# print(a.string)

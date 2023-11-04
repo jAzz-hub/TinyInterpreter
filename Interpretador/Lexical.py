@@ -72,9 +72,7 @@ class LexicalAnalyzer:
             if not auxChar:
                 break
 
-        print(punchcard)
-        print(tokensCard)
-        
+
         the_lexeme = Lexeme()
         
         i=0 

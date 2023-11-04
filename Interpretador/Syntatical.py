@@ -7,8 +7,10 @@ from Lexical import *
 
 from Expressions_and_Commands.OutputCommand import *
 
+from Expressions_and_Commands.ReadIntExpression import *
+
 class SyntaticAnalyzer:
-    def __init__(self, lexeme = Lexeme(), LexAnalysis = LexicalAnalyzer('examples/const.tiny')):
+    def __init__(self, lexeme = Lexeme(), LexAnalysis = LexicalAnalyzer('examples/read.tiny')):
         self.LexAnalysis = LexAnalysis
         self.lexemes = LexAnalysis.TinyAutomata()
         self.readingPoint = 0
@@ -32,8 +34,6 @@ class SyntaticAnalyzer:
         exit()
 
     def eat(self, token):
-        print('\n\n')
-        print(f'i: {self.readingPoint} (Expected: {token} , Found: {self.lexemes[self.readingPoint].word})\n')
 
         if token == self.lexemes[self.readingPoint].word:
             self.NextLexeme()
@@ -54,6 +54,7 @@ class SyntaticAnalyzer:
         self.eat('KT_PROGRAM')
         
         programCmd = self.procCmdList()
+        
 
         return programCmd
 
@@ -71,7 +72,7 @@ class SyntaticAnalyzer:
             cmdCmd = self.procCmd()
             commands.addCommand(cmdCmd)
 
-
+        
         return commands 
 
     #<cmd>       ::= (<assign> | <output> | <if> | <while>) ;
@@ -82,7 +83,6 @@ class SyntaticAnalyzer:
             self.procAssign()
 
         elif self.lexemes[self.readingPoint].word == 'KT_OUTPUT':
-            
             auxCommand = self.procOutput()
             
         elif self.lexemes[self.readingPoint].word == 'KT_IF':
@@ -113,7 +113,8 @@ class SyntaticAnalyzer:
         
         expression = self.procIntExpr()
         
-        outputCmd = OutputCommand(outputLine, expression.expression())
+        outputCmd = OutputCommand(outputLine, expression if type(expression) == type(1)  else expression.expression() )
+        
         
         return outputCmd
          
@@ -202,8 +203,13 @@ class SyntaticAnalyzer:
             return a
 
         else:
+            
             self.eat('KT_READ')
-            return 0
+            readLine = self.LexAnalysis.line
+            
+            readExpression = ReadIntExpression(readLine)
+            
+            return readExpression.ReadIntExpression()
 
 
     #<var>       ::= id
@@ -216,7 +222,6 @@ class SyntaticAnalyzer:
         
         auxVariable =  self.lexemes[self.readingPoint].token
         
-        print(f'AQUII @@ {auxVariable}')
         
         self.eat('NUMBER')
         
@@ -226,7 +231,5 @@ class SyntaticAnalyzer:
 
         expression = ConstIntExpression(lineOfNumber, eatenNumber)
         
-        
-        print(f'AQUII ## {expression.expression()}')
 
         return expression

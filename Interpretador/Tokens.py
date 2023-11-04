@@ -32,11 +32,6 @@ def InsideTokenScope(token):
 def EquivalentSymbol(token):
   for i in Tokens:
     if i.value == token:
-      print(i.name)
       return i.name  
-  print(i.name)
   return 'OT_VAR'
 
-
-print(InsideTokenScope('%'))
-print(EquivalentSymbol('z'))

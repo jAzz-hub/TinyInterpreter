@@ -10,5 +10,5 @@ class IntExpression:
         return self._line
     
     @abstractmethod
-    def expression():
+    def expression(self):
         return 0
